@@ -1,0 +1,232 @@
+.about {
+    min-width: 320px;
+    padding: 100px 70px;
+    background-color: #202020;
+}
+
+@media screen and (max-width: 768px) {
+    .about {
+        padding: 50px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .about {
+        padding: 18px;
+    }
+}
+
+.about_black {
+    background-color: #272727;
+}
+
+.about__header {
+    margin: 10px 0 0 0;
+    height: 50px;
+    width: 100%;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: -0.04em;
+    text-align: left;
+    border-bottom: 1px solid #DADADA;
+}
+
+@media screen and (max-width: 320px) {
+    .about__header {
+        font-size: 18px;
+        font-style: normal;
+        line-height: 22px;
+        letter-spacing: -0.04em;
+    }
+}
+
+.about__description {
+    margin-top: 70px;
+    padding: 0;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    justify-content: start;
+}
+
+@media screen and (max-width: 645px) {
+    .about__description {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.about__description-header {
+    max-width: 550px;
+    padding-right: 40px;
+    margin: 0;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 645px) {
+    .about__description-header {
+        margin: 56px 0 0 0;
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+
+.about__description-para {
+    max-width: 550px;
+    
+    margin-top: 26px 0 0 0;
+    padding: 0 40px 0 0;
+    
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+
+}
+
+@media screen and (max-width: 645px) {
+    .about__description-para {
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 22px 0 0 0;
+        
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .about__description-para {
+        margin: 16px 0 0 0;
+    }
+}
+
+.about__scale {
+    padding: 0;
+    margin: 99px 0 10px 0;
+}
+
+@media screen and (max-width: 768px) {
+    .about__scale {
+        margin: 82px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 645px) {
+    .about__scale {
+        margin: 49px 0 0 0;
+    }
+}
+
+
+.about__scale-descrition {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 20% 80%;
+
+    
+}
+
+@media screen and (max-width: 768px) {
+    .about__scale-descrition {
+        grid-template-columns: 30% 70%;
+    }
+}
+
+
+.about__scale-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #000000;
+
+    padding: 9px 0;
+    margin: 0;
+}
+
+@media screen and (max-width: 320px) {
+    .about__scale-header {
+        padding: 11px 0px;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 13px;
+    }
+}
+
+.about__scale-header_green{
+    background-color: #3DDC84;
+}
+
+.about__scale-header_white{
+    
+    color: #FFFFFF;
+    background-color: #303030;
+}
+
+.about__scale-para{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: center;
+    color: #8B8B8B;
+    margin: 14px  0;
+}
+
+@media screen and (max-width: 768px) {
+    .about__scale-para {
+        /* padding: 11px 10px; */
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 17px;
+        letter-spacing: 0px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .about__scale-para {
+        /* padding: 11px 10px; */
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 13px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .about__scale-para {
+        /* padding: 11px 10px; */
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 13px;
+    }
+}
