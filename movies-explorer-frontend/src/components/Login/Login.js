@@ -14,12 +14,12 @@ export function Login() {
                 <div>
                     <div className='register__input-container'>
                         <div className='register__input-title'>E-mail</div>
-                        <input className='register__input' type='text'></input>
+                        <input required className='register__input' type='text'></input>
                     </div>
                     <div className='register__input-container'>
                         <div className='register__input-title'>Пароль</div>
-                        <input type='password' className='register__input'></input>
-                        {/* <div className='register__input-error' type='text'>Что-то пошло не так...</div> */}
+                        <input required type='password' className='register__input'></input>
+                        <div className='register__input-error' type='text'>Что-то пошло не так...</div>
                     </div>
                 </div>
                 <div className='login__container'>

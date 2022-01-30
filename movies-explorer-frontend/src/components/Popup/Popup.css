@@ -9,20 +9,16 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    /* visibility: hidden;
+    visibility: hidden;
     transition: visibility 0s, opacity .5s linear;
-    opacity: 0; */
+    opacity: 0;
     z-index: 1;
-    display: none;
 }
 
-
-@media screen and (max-width: 768px) {
-    .popup {
-        display: flex;
-    }
+.popup_visible {
+    visibility: visible;
+    opacity: 1;
 }
-
 
 .popup__container {
     z-index: 0;

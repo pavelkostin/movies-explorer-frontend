@@ -56,7 +56,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .header__list_hidden {
+    .header__list {
         display: none;
     }
 }
@@ -75,15 +75,22 @@
 }
 
 .header__account {
+    visibility: visible;
+    display: flex;
+    align-items: center;
+}
+
+.header__account_hidden {
     display: flex;
     align-items: center;
 }
 
 @media screen and (max-width: 768px) {
     .header__account_hidden {
-        display: none;
+        visibility: hidden;
     }
 }
+
 
 .header__email {
     transition: opacity 0.3s ease-in-out;
@@ -175,15 +182,21 @@
     display: none;
 }
 
+@media screen and (max-width: 768px) {
+    .header__burger-menu_visible {
+        display: flex;
+    }
+}
+
 .header__burger-menu:hover {
     opacity: 0.6;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
     .header__burger-menu {
         width: 44px;
         height: 44px;
-        display: flex;
     }
 }
 

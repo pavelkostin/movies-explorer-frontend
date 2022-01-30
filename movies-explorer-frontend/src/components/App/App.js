@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Main } from '../Main/Main';
 import { Movies } from '../Movies/Movies';
@@ -6,21 +7,40 @@ import { Profile } from '../Profile/Profile';
 import { Register } from '../Register/Register';
 import { Login } from '../Login/Login';
 import { NotFoundPage } from '../NotFoundPage/NotFoundPage';
+import { Header } from '../Header/Header';
+import { Popup } from '../Popup/Popup';
 
 function App() {
+
+  const [loggedIn, setLoggedIn] = useState(true);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  function handlePopupClick() {
+    setIsPopupOpen(true)
+  }
+
+  function closePopup() {
+    setIsPopupOpen(false);
+  }
+
   return (
     <main className='page'>
+
       <Switch>
         <Route exact path='/'>
-          <Main />
+          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
+          <Main loggedIn={loggedIn} />
         </Route>
         <Route path='/movies'>
           <Movies />
         </Route>
         <Route path='/saved-movies'>
-          <SavedMovies />
+          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
+          <SavedMovies loggedIn={loggedIn} />
         </Route>
         <Route path='/profile'>
+          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
           <Profile />
         </Route>
         <Route path='/signin'>
@@ -33,6 +53,7 @@ function App() {
           <NotFoundPage />
         </Route>
       </Switch>
+      <Popup isOpen={isPopupOpen} onClose={closePopup}/>
     </main>
   );
 }

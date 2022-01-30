@@ -13,15 +13,15 @@ export function Register() {
             <div className='register__input-list'>
                 <div className='register__input-container'>
                     <div className='register__input-title'>Имя</div>
-                    <input className='register__input' type='text'></input>
+                    <input required className='register__input' type='text'></input>
                 </div>
                 <div className='register__input-container'>
                     <div className='register__input-title'>E-mail</div>
-                    <input className='register__input' type='text'></input>
+                    <input required className='register__input' type='email'></input>
                 </div>
                 <div className='register__input-container'>
                     <div className='register__input-title'>Пароль</div>
-                    <input type='password' className='register__input register__input_error'></input>
+                    <input required type='password' className='register__input register__input_error'></input>
                     <div className='register__input-error' type='text'>Что-то пошло не так...</div>
                 </div>
             </div>

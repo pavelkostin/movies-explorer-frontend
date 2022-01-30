@@ -91,6 +91,11 @@
     outline: none;
 }
 
+.register__input:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #ffffff;
+}
+
 @media screen and (max-width: 768px) {
     .register__input {
         min-width: 260px;

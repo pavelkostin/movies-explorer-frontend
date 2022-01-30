@@ -16,6 +16,6 @@
     -moz-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     
-    overflow:  hidden;
+    /* overflow:  hidden; */
     margin: 0 auto;
 }

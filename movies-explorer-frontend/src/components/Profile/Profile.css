@@ -92,6 +92,16 @@
     letter-spacing: 0px;
     text-align: center;
     margin-bottom: 16px;
+
+    transition: opacity 0.3s ease-in-out;
+    border: none;
+    background-color: #202020;
+    color: #fff;
+}
+
+.profile__edit-btn:hover {
+    opacity: .6;
+    cursor: pointer;
 }
 
 .profile__log-out-btn {
@@ -103,5 +113,15 @@
     text-align: center;
     color: #EE3465;
     /* margin-bottom: 0; */
+    transition: opacity 0.3s ease-in-out;
+    border: none;
+    background-color: #202020;
+    
 }
+
+.profile__log-out-btn:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
 

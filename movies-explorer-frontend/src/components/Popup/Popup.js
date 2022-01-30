@@ -1,14 +1,12 @@
 import { NavLink, Link } from 'react-router-dom';
-import closeIcon from '../../images/close-icon.svg';
 
-export function Popup() {
+export function Popup({isOpen, onClose}) {
     return (
-        <div className='popup'>
+        <div className={`popup ${isOpen && 'popup_visible'}`} >
 
             <div className='popup__container'>
                 <div className='popup__container-logo'>
-                    {/* <img className='header__logo_popup' src={closeIcon} alt='popup-close' /> */}
-                    <button className='popup__close-btn'></button>
+                    <button onClick={onClose} className='popup__close-btn'></button>
                 </div>
                 <div className='popup__container-info'>
                     <div className='popup__nav-list'>
