@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import headerLogo from '../../images/headerLogo.png';
+import headerLogo from '../../images/headerLogo.svg';
 
 export function Header({ loggedIn, handlePopupClick, linkPlaceHolder, loginPLaceHolder }) {
 
 
     return (
-        <header className='header header_black'>
+        <header className={`header ${loggedIn ? 'header_black' : ''}`}>
             <div className='header__container'>
                 <Link to='/'>
                     <img className='header__logo' src={headerLogo} alt='логотип проекта Movie-Explorer' />

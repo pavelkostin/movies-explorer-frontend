@@ -15,7 +15,7 @@ export function Main({ loggedIn, handlePopupClick }) {
             <AboutProject />
             <Techs />
             <AboutMe />
-            <Portfolio />
+            <Portfolio /> 
             <Footer />
         </>
 

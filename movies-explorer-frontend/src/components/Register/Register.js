@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import headerLogo from '../../images/headerLogo.png';
+import headerLogo from '../../images/headerLogo.svg';
 
 export function Register() {
     return (

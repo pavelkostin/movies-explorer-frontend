@@ -1,3 +1,37 @@
+.techs {
+    max-width: 100vw;
+    margin: 0 auto;
+
+    padding: 100px 70px;
+}
+
+@media screen and (max-width: 768px) {
+    .techs {
+        padding: 90px 50px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .techs {
+        padding: 70px 18px;
+    }
+}
+
+.techs_grey {
+    background-color: #272727;
+}
+
+@media screen and (max-width: 320px) {
+    .techs_grey {
+        background-color: #202020;
+    }
+}
+
+.techs__container {
+    margin: 0 auto;
+    max-width: 1280px;
+}
+
 .techs__header {
     font-size: 50px;
     font-style: normal;
@@ -55,13 +89,13 @@
 
 @media screen and (max-width: 768px) {
     .techs__list {
-        margin: 83px 0;
+        margin: 83px 0 0;
     }
 }
 
 @media screen and (max-width: 648px) {
     .techs__list {
-        margin: 50px 0;
+        margin: 50px 0 0;
     }
 }
 

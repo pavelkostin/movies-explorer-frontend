@@ -7,19 +7,34 @@ export function Portfolio() {
             <ul className='portfolio__list'>
                 <li className='portofolio__item'>
                     <h4 className='portofolio__item-header'>Статичный сайт</h4>
-                    <a href='https://github.com/pavelkostin/mesto/' alt='static'>
+                    <a
+                        href='https://github.com/pavelkostin/mesto/'
+                        alt='static'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
                         <div className='portfolio__img'></div>
                     </a>
                 </li>
                 <li className='portofolio__item'>
                     <h4 className='portofolio__item-header'>Адаптивный сайт</h4>
-                    <a href='https://github.com/pavelkostin/mesto/' alt='static'>
+                    <a
+                        href='https://github.com/pavelkostin/mesto/'
+                        alt='static'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
                         <div className='portfolio__img'></div>
                     </a>
                 </li>
                 <li className='portofolio__item'>
                     <h4 className='portofolio__item-header'>Одностраничное приложение</h4>
-                    <a href='https://github.com/pavelkostin/mesto' alt='static'>
+                    <a
+                        href='https://github.com/pavelkostin/mesto'
+                        alt='static'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
                         <div className='portfolio__img'></div>
                     </a>
                 </li>

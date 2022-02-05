@@ -7,8 +7,8 @@
 
     background-color: #202020;
     padding: 92px 70px 0;
-    min-width: 320px;
-    overflow:  hidden;
+    /* min-width: 320px; */
+    /* overflow:  hidden; */
 }
 
 @media screen and (max-width: 768px) {
@@ -17,7 +17,7 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .profile {
         padding: 80px 18px 0;
     }
@@ -48,7 +48,7 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .profile__container {
         padding: 80px 18px 0;
     }

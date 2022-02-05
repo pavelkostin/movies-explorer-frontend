@@ -2,13 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* box-sizing: border-box; */
     position: relative;
     background-color: #073042;
-    min-width: 320px;
+    min-width: 260px;
     padding: 0 70px;
-    /* margin: 0 auto; */
-
 }
 
 @media screen and (max-width: 768px) {
@@ -17,7 +14,7 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .promo {
         padding: 0 18px;
     }
@@ -77,7 +74,7 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .promo__header {
         font-size: 31px;
         line-height: 39px;

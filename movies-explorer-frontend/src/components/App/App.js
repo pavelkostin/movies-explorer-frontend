@@ -12,7 +12,7 @@ import { Popup } from '../Popup/Popup';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -33,6 +33,7 @@ function App() {
           <Main loggedIn={loggedIn} />
         </Route>
         <Route path='/movies'>
+          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
           <Movies />
         </Route>
         <Route path='/saved-movies'>
@@ -53,7 +54,7 @@ function App() {
           <NotFoundPage />
         </Route>
       </Switch>
-      <Popup isOpen={isPopupOpen} onClose={closePopup}/>
+      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </main>
   );
 }

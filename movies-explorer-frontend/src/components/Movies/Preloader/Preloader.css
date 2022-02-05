@@ -1,9 +1,10 @@
 .preloader {
     padding: 60px 70px 80px;
     
-
+    max-width: 1280px;
+    margin: 0 auto;
     background-color: #202020;
-    min-width: 320px;
+    /* min-width: 260px; */
 }
 
 @media screen and (max-width: 768px) {
@@ -12,9 +13,10 @@
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .preloader {
         padding: 80px 18px;
+        
     }
 }
 

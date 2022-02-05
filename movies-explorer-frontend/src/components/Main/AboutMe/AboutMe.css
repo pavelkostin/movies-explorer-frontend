@@ -35,7 +35,7 @@ letter-spacing: -0.04em;
 text-align: left;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .about-me__header {
         font-size: 30px;
         line-height: 36px;
@@ -65,7 +65,7 @@ text-align: left;
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .about-me__para {
         margin: 20px 0 0 0;
         font-size: 11px;
@@ -96,7 +96,7 @@ text-align: left;
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .about-me__para-2 {
         margin: 20px 0 0 0;
         max-width: 292px;
@@ -122,10 +122,10 @@ text-align: left;
     }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .about-me__photo {
         margin-top: 60px;
-        width: 292px;
+        max-width: 292px;
         height: 352px;
     }
 }
@@ -144,7 +144,7 @@ text-align: left;
     color: #FFFFFF;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
     .about-me__list {
         margin: 40px 0 0 0;
     }

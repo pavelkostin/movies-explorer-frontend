@@ -7,7 +7,6 @@ import { Footer } from '../Footer/Footer';
 export function Movies() {
     return (
         <>
-            <Header loginPLaceHolder='Аккаунт'></Header>
             <SearchForm />
             <MoviesCardList />
             <Preloader />

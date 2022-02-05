@@ -1,14 +1,32 @@
+import React, { useState } from 'react';
+
 export function SearchForm() {
+
+    const [shortFilms, setShortFilms] = useState(false);
+
+    function clickButton() {
+        setShortFilms(true);
+    }
+
     return (
         <section className='search-section'>
-            <div className='search'>
-                <p className='search-film'>Фильм</p>
+
+            <label className='search-label'>
+                <input
+                    className='search-input'
+                    type='text'
+                    name='film'
+                    placeholder='Фильм'
+                    required
+                    />
                 <button className='search-btn'>Найти</button>
-            </div>
+            </label>
+
+
             <div className='search-container'>
-                <div className='search-switch'>
+                <button className={`search-switch ${shortFilms ? '' : 'search-switch_start'}`} onClick={clickButton}>
                     <div className='search-circle'></div>
-                </div>
+                </button>
                 <h3 className='search-para'>Короткометражки</h3>
             </div>
         </section>
