@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export function SearchForm({ onSearch, onSearchShort }) {
+export function SearchFormSaved({ fetchShortSavedMovies, fetchAllSavedMovies }) {
 
     const [searchItem, setSearchItem] = useState('');
     const [active, setActive] = useState(false);
@@ -28,10 +28,10 @@ export function SearchForm({ onSearch, onSearchShort }) {
         checkInput();
         if (active && searchItem !== '') {
             setError('');
-            onSearchShort(searchItem);
+            fetchShortSavedMovies(searchItem);
         } else if (searchItem !== '') {
             setError('');
-            onSearch(searchItem);
+            fetchAllSavedMovies(searchItem);
         } else {
             setError('Нужно ввести ключевое слово')
         }
@@ -40,19 +40,21 @@ export function SearchForm({ onSearch, onSearchShort }) {
     function clickButtonTrue() {
         setActive(true);
         if (searchItem !== '') {
-            onSearchShort(searchItem);
+            fetchShortSavedMovies(searchItem);
         }
     }
 
     function clickButtonFalse() {
         setActive(false);
         if (searchItem !== '') {
-            onSearch(searchItem);
+            fetchAllSavedMovies(searchItem);
         }
+        
     }
 
     return (
         <section className='search-section'>
+
             <form className='search-label' onSubmit={searchFilm}>
                 <input
                     className='search-input'
@@ -67,6 +69,7 @@ export function SearchForm({ onSearch, onSearchShort }) {
                 <button className='search-btn' type='submit'>Найти</button>
             </form>
             {error && <div className='search-input-error'>{error}</div>}
+
             <div className='search-container'>
                 <button
                     className={`search-switch ${active ? '' : 'search-switch_start'}`}
@@ -74,6 +77,7 @@ export function SearchForm({ onSearch, onSearchShort }) {
                 >
                     <div className='search-circle'></div>
                 </button>
+
                 <h3 className='search-para'>Короткометражки</h3>
             </div>
         </section>

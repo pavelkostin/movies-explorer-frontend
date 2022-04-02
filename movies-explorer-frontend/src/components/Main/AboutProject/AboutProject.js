@@ -2,6 +2,8 @@ import React from 'react';
 
 export function AboutProject() {
 
+    
+
     return (
         <div className='about'>
             <h2 className='about__header'>О проекте</h2>

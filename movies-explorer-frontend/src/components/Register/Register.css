@@ -37,6 +37,11 @@
     }
 }
 
+.register__form {
+    padding: 0;
+    margin: 0;
+}
+
 .register__logo {
     transition: opacity 0.3s ease-in-out;
     width: 38px;
@@ -87,8 +92,20 @@
     letter-spacing: 0em;
     text-align: left;
     padding: 15px;
-
     outline: none;
+}
+
+
+.register__input-error {
+    color: red;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
 }
 
 .register__input:focus {
@@ -134,6 +151,11 @@
     border-radius: 3px;
     margin: 69px 0 16px 0;
     min-width: 438px;
+}
+
+.register__submit-btn_disabled {
+    background-color: grey;
+    cursor: default;
 }
 
 @media screen and (max-width: 768px) {

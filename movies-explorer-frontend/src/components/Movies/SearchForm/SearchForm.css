@@ -40,7 +40,6 @@
 
 .search-input:focus {
     outline: none;
-    box-shadow: 0 0 0 1px #424242;
     width: calc(100% - 30%);
     border-radius: 40px;
     color: #FFFFFF;
@@ -49,7 +48,7 @@
 .search-input {
     background-color: #2F2F2F;
     border: none;
-
+    outline: none;
     margin-left: 16px;
     color: #8B8B8B;
     font-size: 13px;
@@ -58,6 +57,18 @@
     line-height: 17px;
     letter-spacing: 0px;
     text-align: left;
+}
+
+
+.search-input-error {
+    color: red;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-left: 16px;
 }
 
 @media screen and (max-width: 420px) {
@@ -110,6 +121,7 @@
 
 .search-switch_start {
     justify-content: flex-start;
+    background-color: grey;
 }
 
 .search-circle {

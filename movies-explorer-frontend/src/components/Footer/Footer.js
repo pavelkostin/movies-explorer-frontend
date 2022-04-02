@@ -1,8 +1,19 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 export function Footer() {
+
+
+    const location = useLocation();
+    
+    const isLocationMainOrMovies =
+        location.pathname === '/' ||
+        location.pathname === '/movies' ||
+        location.pathname === '/saved-movies';
+
+
     return (
-        <section className='footer'>
+        isLocationMainOrMovies && <section className='footer'>
             <p className='footer__para'>Учебный проект Яндекс.Практикум х BeatFilm.</p>
             <div className='footer__container'>
                 <p className='footer__copyright'>© 2022</p>

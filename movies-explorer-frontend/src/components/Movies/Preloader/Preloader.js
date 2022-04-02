@@ -1,9 +1,14 @@
-export function Preloader() {
+import React from 'react'
+
+export function Preloader({ preloader }) {
     return (
-            <section className='preloader'>
+        <div className='search-section'>
+            <div className={`preloader ${preloader ? 'preloader_visible' : ''} `}>
                 <div className='preloader__container'>
-                    <p className='preloader__para'>Ещё</p>
+                    <span className='preloader__round'></span>
                 </div>
-            </section>
-    );
-}
+            </div>
+        </div>
+
+    )
+};

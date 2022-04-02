@@ -1,0 +1,15 @@
+.movies-more-films-container {
+    transition: opacity 0.3s ease-in-out;
+    display: flex;
+    background-color: #2F2F2F;
+    border: 1px solid #202020;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    padding-top: 11px;
+    padding-bottom: 9px;
+}
+
+.movies-more-films-container:hover {
+    opacity: 0.6;
+}

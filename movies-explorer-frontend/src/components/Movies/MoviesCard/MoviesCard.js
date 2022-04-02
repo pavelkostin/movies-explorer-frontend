@@ -1,27 +1,52 @@
 import React, { useState } from 'react';
 import imgSaveFilm from '../../../images/img-save-film.svg';
-import imageFilm from '../../../images/photo.jpg';
-import imageDelFilm from '../../../images/img-del-film.svg';
 
-export function MoviesCard() {
+export function MoviesCard({ movie, saveMovie, savedMovies }) {
 
-    const [inactive, setInactive] = useState(true);
-    const [active, setActive] = useState(false);
-    const [deleted, setDeleted] = useState(false);
+    const [saved, setSaved] = useState(false)
+
+    const isSaved = movie.id && savedMovies.some((m) => m.movieId === movie.id)
+
+    React.useEffect(() => {
+        if (isSaved) {
+            setSaved(true);
+        } else {
+            setSaved(false);
+        }
+    }, [isSaved])
+
+
+    function saveFilmClick() {
+        if (!isSaved) {
+            saveMovie(movie);
+            setSaved(true)
+        }
+    }
+
 
 
     return (
         <li className='movies-card'>
             <div className='movies-card__container'>
-                <h3 className='movies-card__title'>В погоне за Бэнкси</h3>
-                <p className='movies-card__duration'>27 минут</p>
+                <h3 className='movies-card__title'>{movie.nameRU}</h3>
+                <p className='movies-card__duration'>{movie.duration} минут</p>
             </div>
-            <img className='movies-card__img' src={imageFilm} alt='film-pic' />
-            <button className={`movies-card__img-container ${active ? 'movies-card__img-container_saved' : ''}`}>
-                {inactive && <div className='movies-card__para'>Сохранить</div>}
-                {active && <img src={imgSaveFilm} alt='saved' />}
-                {deleted && <img src={imageDelFilm} alt='delete' />}
+            <a href={movie.trailerLink}>
+                <img className='movies-card__img'
+                    src={`https://api.nomoreparties.co/${movie.image.url}`}
+                    alt={movie.nameEN} />
+            </a>
+
+
+            {saved ? <button className='movies-card__img-container movies-card__img-container_saved'>
+                <img src={imgSaveFilm} alt='saved' />
             </button>
+                :
+                <button onClick={saveFilmClick} className='movies-card__img-container'>
+                    <div className='movies-card__para'>Сохранить</div>
+                </button>
+            }
+
         </li>
     );
 }

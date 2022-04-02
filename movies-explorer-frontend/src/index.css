@@ -19,5 +19,6 @@
 @import url(./components/Footer/Footer.css);
 @import url(./components/NotFoundPage/NotFoundPage.css);
 @import url(./components/Popup/Popup.css);
-
+@import url(./components/infoToolTip/infoToolTip.css);
+@import url(./components/Movies/MoreMoviesButton/MoreMoviesButton.css);
 
