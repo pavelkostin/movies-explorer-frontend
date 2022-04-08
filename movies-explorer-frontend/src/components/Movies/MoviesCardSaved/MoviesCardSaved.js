@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-/* import imgSaveFilm from '../../../images/img-save-film.svg'; */
+import React from 'react';
 import imageDelFilm from '../../../images/img-del-film.svg';
 
 
@@ -16,7 +15,9 @@ export function MoviesCardSaved({ movie, removeMovie }) {
                 <p className='movies-card__duration'>{movie.duration} минут</p>
             </div>
             <a href={movie.trailer}>
-                <img className='movies-card__img' src={movie.image} alt={movie.nameEN} />
+                <img className='movies-card__img'
+                    src={movie.image}
+                    alt={movie.nameEN} />
             </a>
             <button onClick={deleteFilm} className='movies-card__img-container'>
                 <img src={imageDelFilm} alt='delete' />

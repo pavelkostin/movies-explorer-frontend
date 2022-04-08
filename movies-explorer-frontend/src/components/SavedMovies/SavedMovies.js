@@ -1,21 +1,26 @@
 import { SearchFormSaved } from '../Movies/SearchFormSaved/SearchFormSaved';
 import { Preloader } from '../Movies/Preloader/Preloader';
-import { MoviesCardListSaved } from '../Movies/MoviesCardListSaved/MoviesCardListSaved';
 import { InfoToolTipResults } from '../infoToolTip/infoToolTipResults';
 import { InfoToolTip } from '../infoToolTip/infoToolTip';
+import { MoviesCardList } from '../Movies/MoviesCardList/MoviesCardList';
 
 export function SavedMovies({
-    noResults,
-    message,
+
+    movies,
     preloader,
     savedMovies,
     fetchShortSavedMovies,
     fetchAllSavedMovies,
     removeMovie,
+
+    noResults,
+    message,
     isSuccessApiError,
     errorStyle,
-    handleMoreSavedFilms,
-    moreFilmsBtn
+
+    filteredResults,
+    clickedBtnSearch
+
 }) {
     return (
         <>
@@ -26,12 +31,16 @@ export function SavedMovies({
             {preloader && <Preloader
                 preloader={preloader}
             />}
-            {savedMovies.length > 0 && <MoviesCardListSaved
+
+            {<MoviesCardList
+                movies={movies}
                 savedMovies={savedMovies}
                 removeMovie={removeMovie}
-                handleMoreSavedFilms={handleMoreSavedFilms}
-                moreFilmsBtn={moreFilmsBtn}
+
+                filteredResults={filteredResults}
+                clickedBtnSearch={clickedBtnSearch}
             />}
+
             {noResults && <InfoToolTipResults
                 message={message}
             />}

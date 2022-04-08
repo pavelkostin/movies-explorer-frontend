@@ -16,7 +16,9 @@ export function Movies({
     movies,
     onSearch,
     onSearchShort,
-    saveMovie
+    saveMovie,
+    removeMovie,
+    unSaveMovie
 }) {
     return (
         <>
@@ -34,6 +36,8 @@ export function Movies({
                 savedMovies={savedMovies}
                 handleMoreFilmsClick={handleMoreFilmsClick}
                 moreFilmsBtn={moreFilmsBtn}
+                removeMovie={removeMovie}
+                unSaveMovie={unSaveMovie}
             />}
             {noResults && <InfoToolTipResults
                 message={message}

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
-import {
-  splice, slice, concat,
-} from 'lodash';
+import { slice, concat } from 'lodash';
 import { Main } from '../Main/Main';
 import { Movies } from '../Movies/Movies';
 import { SavedMovies } from '../SavedMovies/SavedMovies';
@@ -22,23 +20,32 @@ import { ProtectedRoute } from '../../components/ProtectedRoute/ProtectedRoute';
 function App() {
   const LIMIT = 3;
   const [moreFilmsBtn, setMoreFilmsBtn] = useState(true);
+
   const [index, setIndex] = useState(LIMIT);
   const [slicedMovies, setSlacedMovies] = useState([]);
+  
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [shownMovies, setShownMovies] = useState([]);
+
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState({});
-  const [savedMovies, setSavedMovies] = useState([]);
+  
   const [message, setMessage] = useState('');
   const [errorStyle, setErrorStyle] = useState(false);
   const [preloader, setPreloader] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [movies, setMovies] = useState([]);
+  
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSuccessApiError, setIsSuccessApiError] = useState(false);
   const [noResults, setNoResults] = useState(false);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [clickedBtnSearch, setClickedBtnSearch] = useState(false)
+
+  
 
   // user
-
   useEffect(() => {
     MainApi.getUserInfo()
       .then((user) => {
@@ -60,8 +67,32 @@ function App() {
     }
   }, [history, loggedIn])
 
-  // popup
+  // saved movies display
+  useEffect(() => {
+    setPreloader(true);
+    MainApi.getMovies()
+      .then((data) => {
+        const myMovies = data.filter(function (item) {
+          return item.owner === currentUser.id;
+        })
+        setPreloader(false);
+        setSavedMovies(myMovies);
+        console.log(myMovies);
 
+      })
+      .catch((err) => console.log(err))
+  }, [loggedIn, currentUser.id]);
+
+  // show more button
+  useEffect(() => {
+    if (movies.length === slicedMovies.length) {
+      setMoreFilmsBtn(false);
+    } else {
+      setMoreFilmsBtn(true);
+    }
+  }, [slicedMovies, movies]);
+
+  // popup
   function handlePopupClick() {
     setIsPopupOpen(true)
   }
@@ -71,7 +102,6 @@ function App() {
   }
 
   // reg, auth, signout
-
   function registration(name, email, password) {
     Auth.register(name, email, password)
       .then((res) => {
@@ -190,13 +220,15 @@ function App() {
 
 
   function fetchAllFilms(searchItem) {
-
-    // для showmore
-    setMovies([]);
-    setSlacedMovies([]);
     setIndex(LIMIT);
     setMoreFilmsBtn(true);
     setPreloader(true);
+    if (
+      movies.length === slicedMovies.length) {
+      setMoreFilmsBtn(false)
+    } else {
+      setMoreFilmsBtn(true);
+    }
 
     MoviesApi.getFilms()
       .then((data) => {
@@ -218,12 +250,10 @@ function App() {
             setPreloader(false);
             setNoResults(false);
             setMessage('');
-
             // для showmore
             const a = slice(filteredMovies, 0, LIMIT);
             setMovies(a);
             setSlacedMovies(filteredMovies);
-
           }, 500)
         }
       })
@@ -240,172 +270,94 @@ function App() {
       });
   }
 
-  // display more films/saved films
-
+  // display more films
   function handleMoreFilmsClick() {
+    setMovies([]);
     const newIndex = index + LIMIT;
     const d = slice(slicedMovies, index, newIndex);
-    const e = concat(movies, d);
+    const e = ([...movies, ...d])
     setIndex(newIndex);
     setMovies(e);
   }
 
-  function handleMoreSavedFilms() {
-    const newIndex = index + LIMIT;
-    const d = slice(slicedMovies, index, newIndex);
-    const e = concat(savedMovies, d);
-    setIndex(newIndex);
-    setSavedMovies(e);
-  }
-
-
-  // show more button
-
-  useEffect(() => {
-    if (movies.length === slicedMovies.length) {
-      setMoreFilmsBtn(false);
-    } else {
-      setMoreFilmsBtn(true);
-    }
-  }, [slicedMovies, movies]);
-
-  useEffect(() => {
-    if (savedMovies.length === slicedMovies.length) {
-      setMoreFilmsBtn(false);
-    } else if(savedMovies.length < slicedMovies.length) {
-      setMoreFilmsBtn(false);
-    } else {
-      setMoreFilmsBtn(true);
-    }
-  }, [slicedMovies, savedMovies]);
-
-
   // saved movies
 
-  useEffect(() => {
-
-    setSavedMovies([]);
-    setSlacedMovies([]);
-    setIndex(LIMIT);
-    setMoreFilmsBtn(true);
-
-    setPreloader(true);
-
-    MainApi.getMovies()
-      .then((data) => {
-        const myMovies = data.filter(function (item) {
-          return item.owner === currentUser.id;
-        })
-        setSavedMovies(myMovies)
-        setPreloader(false);
-
-        const a = slice(myMovies, 0, LIMIT);
-        setSavedMovies(a);
-        setSlacedMovies(myMovies);
-
-      })
-      .catch((err) => console.log(err))
-  }, [loggedIn, currentUser.id]);
-
   function fetchAllSavedMovies(searchItem) {
-
-    // для showmore
-    setSavedMovies([]);
-    setSlacedMovies([]);
-    setIndex(LIMIT);
-    setMoreFilmsBtn(true);
-    setPreloader(true);
-
-    MainApi.getMovies()
-      .then((data) => {
-        const filteredMovies = data.filter(function (item) {
-          return item.nameRU.includes(searchItem) && item.owner === currentUser.id;
-        })
-        if (filteredMovies.length === 0) {
-          setMessage('');
-          setTimeout(() => {
-            setNoResults(true);
-            setMessage('ничего не найдено');
-            setPreloader(false);
-            setSavedMovies([]);
-          }, 500)
-
-        } else {
-          setTimeout(() => {
-            setPreloader(false);
-            setNoResults(false);
-            setMessage('');
-            /* setSavedMovies(filteredMovies); */
-            // для showmore
-            const a = slice(filteredMovies, 0, LIMIT);
-            setSavedMovies(a);
-            setSlacedMovies(filteredMovies);
-          }, 500)
-          /* localStorage.setItem('movies', JSON.stringify(filteredMovies)); */
-        }
-      })
-      .catch(async (err) => {
-        const newErr = await err;
-        if (newErr) {
-          setTimeout(() => {
-            setMessage('');
-            setPreloader(false);
-            setIsSuccessApiError(true);
-            setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.')
-          }, 2000)
-        }
-      });
+    setPreloader(true)
+    setMessage('');
+    setClickedBtnSearch(true);
+    setNoResults(true);
+    let results = savedMovies.filter((item) => {
+      return item.nameRU.includes(searchItem) &&
+        item.owner === currentUser.id;
+    })
+    if (results.length === 0) {
+      setTimeout(() => {
+        setNoResults(true);
+        setMessage('ничего не найдено');
+        setPreloader(false);
+        setFilteredResults([]);
+      }, 500)
+    } else {
+      setTimeout(() => {
+        setPreloader(false);
+        setNoResults(false);
+        setMessage('');
+        setFilteredResults(results);
+      }, 500);
+    }
   }
 
   function fetchShortSavedMovies(searchItem) {
-    setPreloader(true);
-    MainApi.getMovies()
-      .then((data) => {
-        const shortSavedMovies = data.filter(function (item) {
-          return item.nameRU.includes(searchItem) && item.duration < 40 && item.owner === currentUser.id;
-        })
-        if (shortSavedMovies.length === 0) {
-          setMessage('');
-          setTimeout(() => {
-            setNoResults(true);
-            setMessage('ничего не найдено');
-            setPreloader(false);
-            setSavedMovies([]);
-          }, 500)
-          setMessage('');
-        } else {
-          setTimeout(() => {
-            setPreloader(false);
-            setNoResults(false);
-            setMessage('');
-            setSavedMovies(shortSavedMovies);
-          }, 500);
-          /* localStorage.setItem('shortMovies', JSON.stringify(shortSavedMovies)); */
-        }
-      })
-      .catch(async (err) => {
-        const newErr = await err;
-        if (newErr) {
-          setTimeout(() => {
-            setMessage('');
-            setPreloader(false);
-            setIsSuccessApiError(true);
-            setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.')
-          }, 2000)
-        }
-      });
+    setPreloader(true)
+    setMessage('');
+    setClickedBtnSearch(true);
+    setNoResults(true);
+
+
+    let shortResults = savedMovies.filter((item) => {
+      return item.nameRU.includes(searchItem)
+        && item.owner === currentUser.id
+        && item.duration < 40
+    })
+
+    if (shortResults.length === 0) {
+      setMessage('');
+      setTimeout(() => {
+        setNoResults(true);
+        setMessage('ничего не найдено');
+        setPreloader(false);
+        setFilteredResults([]);
+      }, 500)
+      setMessage('');
+    } else {
+      setTimeout(() => {
+        setPreloader(false);
+        setNoResults(false);
+        setMessage('');
+        setFilteredResults(shortResults);
+      }, 500);
+      /* localStorage.setItem('shortMovies', JSON.stringify(shortSavedMovies)); */
+    }
+
+
   }
 
+
+  // save and remove
   function saveMovie(movie) {
     setPreloader(true);
     MainApi.postMovie(movie)
       .then((newMovie) => {
-        setSavedMovies(savedMovies);
-        localStorage.setItem(
-          'savedMovies',
-          JSON.stringify([newMovie, ...savedMovies])
-        )
+        /*         localStorage.setItem(
+                  'savedMovies',
+                  JSON.stringify([newMovie, ...savedMovies])
+                ) */
         /* setSavedMovies(savedMovies); */
+
+        /* setSavedMovies([...savedMovies, newMovie]); */
+        const b = ([...savedMovies, newMovie]);
+        setSavedMovies(b);
         setPreloader(false);
       })
       .catch(async (err) => {
@@ -420,20 +372,44 @@ function App() {
       });
   }
 
+  function unSaveMovie(movie) {
+
+    MainApi.deleteMovie(movie)
+
+    .then((deletedMovie) => {
+
+      setSavedMovies(savedMovies =>
+        savedMovies.filter((state) =>
+          state._id !== deletedMovie._id))
+
+
+
+      setPreloader(false);
+    })
+    .catch((err) => console.log(err))
+  }
+
   function removeMovie(movie) {
     setPreloader(false);
+
     MainApi.deleteMovie(movie)
+
       .then((deletedMovie) => {
-        setSavedMovies(movies => movies.filter((state) => state.movieId !== deletedMovie.movieId))
-        localStorage.removeItem(
-          'savedMovies',
-          JSON.stringify([deletedMovie, ...savedMovies])
-        )
+
+        setSavedMovies(savedMovies =>
+          savedMovies.filter((state) =>
+            state.movieId !== deletedMovie.movieId))
+
+
+
         setPreloader(false);
       })
       .catch((err) => console.log(err))
   }
 
+
+
+  //component
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <main className='page'>
@@ -480,6 +456,8 @@ function App() {
             isSuccessApiError={isSuccessApiError}
             handleMoreFilmsClick={handleMoreFilmsClick}
             moreFilmsBtn={moreFilmsBtn}
+            removeMovie={removeMovie}
+            unSaveMovie={unSaveMovie}
           />
 
           <ProtectedRoute exact path='/saved-movies'
@@ -492,11 +470,12 @@ function App() {
             preloader={preloader}
             noResults={noResults}
             message={message}
-
             isSuccess={isSuccess}
             isSuccessApiError={isSuccessApiError}
-            handleMoreSavedFilms={handleMoreSavedFilms}
-            moreFilmsBtn={moreFilmsBtn}
+            movies={movies}
+
+            filteredResults={filteredResults}
+            clickedBtnSearch={clickedBtnSearch}
           />
 
           <ProtectedRoute exact path='/profile'
