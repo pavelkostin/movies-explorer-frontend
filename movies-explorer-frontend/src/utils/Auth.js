@@ -1,5 +1,5 @@
 /* export const BASE_URL = 'http://localhost:3003'; */
-export const BASE_URL = 'api.movie-kpa.nomoredomains.rocks';
+export const BASE_URL = 'https://api.movie-kpa.nomoredomains.rocks';
 
 function checkResponse(res) {
     if (res.ok) {
