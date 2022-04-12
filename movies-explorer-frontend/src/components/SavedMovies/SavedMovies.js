@@ -32,7 +32,7 @@ export function SavedMovies({
                 preloader={preloader}
             />}
 
-            {<MoviesCardList
+            {savedMovies.length > 0 && <MoviesCardList
                 movies={movies}
                 savedMovies={savedMovies}
                 removeMovie={removeMovie}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
-import { slice, concat } from 'lodash';
+import { slice } from 'lodash';
 import { Main } from '../Main/Main';
 import { Movies } from '../Movies/Movies';
 import { SavedMovies } from '../SavedMovies/SavedMovies';
@@ -16,34 +16,60 @@ import * as Auth from '../../utils/Auth';
 import * as MainApi from '../../utils/MainApi';
 import * as MoviesApi from '../../utils/MoviesApi';
 import { ProtectedRoute } from '../../components/ProtectedRoute/ProtectedRoute';
+import { useLocation } from 'react-router-dom';
 
 function App() {
-  const LIMIT = 3;
-  const [moreFilmsBtn, setMoreFilmsBtn] = useState(true);
 
+  let LIMIT = 12;
+  let STEP = 3;
+  const [moreFilmsBtn, setMoreFilmsBtn] = useState(true);
   const [index, setIndex] = useState(LIMIT);
   const [slicedMovies, setSlacedMovies] = useState([]);
-  
   const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [shownMovies, setShownMovies] = useState([]);
 
   const history = useHistory();
   const [currentUser, setCurrentUser] = useState({});
-  
+
   const [message, setMessage] = useState('');
   const [errorStyle, setErrorStyle] = useState(false);
   const [preloader, setPreloader] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
+
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSuccessApiError, setIsSuccessApiError] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
   const [clickedBtnSearch, setClickedBtnSearch] = useState(false)
 
-  
+  const location = useLocation();
+  const isLocationSavedMovies = location.pathname === '/saved-movies';
+  const isLocationMovies = location.pathname === '/movies';
+  const screenWidth = window.screen.width;
+
+  function changeLimit() {
+    if (screenWidth > 1280) {
+      LIMIT = 12;
+      STEP = 3;
+    } else if (screenWidth >= 768) {
+      LIMIT = 8;
+      STEP = 2;
+    } else if (screenWidth > 480) {
+      LIMIT = 5;
+      STEP = 1;
+    } else if (screenWidth > 320) {
+      LIMIT = 5;
+      STEP = 1;
+    } else if (screenWidth < 320) {
+      LIMIT = 5;
+      STEP = 1;
+    }
+  }
+
+  useEffect(() => {
+    changeLimit()
+  })
 
   // user
   useEffect(() => {
@@ -76,12 +102,13 @@ function App() {
           return item.owner === currentUser.id;
         })
         setPreloader(false);
+
         setSavedMovies(myMovies);
-        console.log(myMovies);
+        localStorage.setItem('savedMovies', JSON.stringify(myMovies));
 
       })
       .catch((err) => console.log(err))
-  }, [loggedIn, currentUser.id]);
+  }, [isLocationSavedMovies, isLocationMovies, loggedIn, currentUser.id]);
 
   // show more button
   useEffect(() => {
@@ -164,7 +191,7 @@ function App() {
     history.push('/');
   }
 
-  // search / search saved films
+  // search movies & search saved movies
 
   function fetchFilmsShort(searchItem) {
 
@@ -218,7 +245,6 @@ function App() {
       });
   }
 
-
   function fetchAllFilms(searchItem) {
     setIndex(LIMIT);
     setMoreFilmsBtn(true);
@@ -251,9 +277,17 @@ function App() {
             setNoResults(false);
             setMessage('');
             // для showmore
+
+            changeLimit();
+
             const a = slice(filteredMovies, 0, LIMIT);
             setMovies(a);
             setSlacedMovies(filteredMovies);
+
+            console.log(movies);
+            console.log(slicedMovies);
+
+
           }, 500)
         }
       })
@@ -272,8 +306,11 @@ function App() {
 
   // display more films
   function handleMoreFilmsClick() {
-    setMovies([]);
-    const newIndex = index + LIMIT;
+    /* setMovies([]); */
+
+
+    /* const newIndex = index + LIMIT; */
+    const newIndex = index + STEP;
     const d = slice(slicedMovies, index, newIndex);
     const e = ([...movies, ...d])
     setIndex(newIndex);
@@ -347,17 +384,27 @@ function App() {
   // save and remove
   function saveMovie(movie) {
     setPreloader(true);
-    MainApi.postMovie(movie)
-      .then((newMovie) => {
-        /*         localStorage.setItem(
-                  'savedMovies',
-                  JSON.stringify([newMovie, ...savedMovies])
-                ) */
-        /* setSavedMovies(savedMovies); */
 
-        /* setSavedMovies([...savedMovies, newMovie]); */
-        const b = ([...savedMovies, newMovie]);
-        setSavedMovies(b);
+    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+    setSavedMovies(savedMovies);
+
+    MainApi.postMovie(movie)
+
+      .then((newMovie) => {
+
+        const savedMoviesFromStorage = localStorage.getItem('savedMovies');
+
+        if (!savedMoviesFromStorage) {
+          localStorage.setItem('savedMovies', JSON.stringify([]));
+          savedMoviesFromStorage = localStorage.geItem('savedMovies');
+        }
+
+        const savedMovies = JSON.parse(savedMoviesFromStorage);
+        savedMovies.push(newMovie);
+
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+        setSavedMovies(savedMovies);
+
         setPreloader(false);
       })
       .catch(async (err) => {
@@ -374,19 +421,20 @@ function App() {
 
   function unSaveMovie(movie) {
 
-    MainApi.deleteMovie(movie)
+    const a = localStorage.getItem('savedMovies');
+    if (!a) {
+      localStorage.setItem('savedMovies', JSON.stringify([]));
+      a = localStorage.geItem('savedMovies');
+    }
+    const savedMovies = JSON.parse(a);
 
-    .then((deletedMovie) => {
-
-      setSavedMovies(savedMovies =>
-        savedMovies.filter((state) =>
-          state._id !== deletedMovie._id))
-
-
-
-      setPreloader(false);
+    const savedMovie = savedMovies.filter(function (item) {
+      return item.movieId === movie.id;
     })
-    .catch((err) => console.log(err))
+
+
+    removeMovie(savedMovie[0]._id);
+
   }
 
   function removeMovie(movie) {
@@ -406,7 +454,6 @@ function App() {
       })
       .catch((err) => console.log(err))
   }
-
 
 
   //component

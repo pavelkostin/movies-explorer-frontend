@@ -17,16 +17,16 @@ export function MoviesCardList({
 
     const location = useLocation();
     const isLocationSavedMovies = location.pathname === '/saved-movies';
-
+    const isLocationMovies = location.pathname === '/movies';
 
     return (
         <section className='card-list__section'>
             <ul className='card-list'>
 
-                {!isLocationSavedMovies && movies.map((movie) => {
+                {isLocationMovies && movies.map((movie) => {
                     return (
                         <MoviesCard
-                            key={movie.id || movie.movieId}
+                            key={movie.id || movie.movieId || movie._id}
                             movie={movie}
                             saveMovie={saveMovie}
                             movies={movies}
@@ -37,7 +37,9 @@ export function MoviesCardList({
                     )
                 })}
 
-                {clickedBtnSearch === false && isLocationSavedMovies && savedMovies.map((movie) => {
+                {clickedBtnSearch === false
+                && isLocationSavedMovies
+                && savedMovies.map((movie) => {
                     return (
                         <MoviesCard
                             key={movie._id || movie.id || movie.movieId}
@@ -51,7 +53,9 @@ export function MoviesCardList({
                     )
                 })}
 
-                {clickedBtnSearch === true && isLocationSavedMovies && filteredResults.map((movie) => {
+                {clickedBtnSearch === true
+                && isLocationSavedMovies
+                && filteredResults.map((movie) => {
                     return (
                         <MoviesCard
                             key={movie._id || movie.id || movie.movieId}
@@ -62,7 +66,7 @@ export function MoviesCardList({
                 })}
 
             </ul>
-            {!isLocationSavedMovies && moreFilmsBtn && <MoreMoviesButton
+            {isLocationMovies && moreFilmsBtn && <MoreMoviesButton
                 handleMoreFilmsClick={handleMoreFilmsClick}
             />}
 

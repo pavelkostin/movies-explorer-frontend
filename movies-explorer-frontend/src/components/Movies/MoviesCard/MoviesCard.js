@@ -35,8 +35,7 @@ export function MoviesCard({ movie, saveMovie, removeMovie,
 
     function unSaveFilmClick() {
 
-        /* removeMovie(movie.id || movie.movieId); */
-        unSaveMovie(movie.id)
+        unSaveMovie(movie)
 
         setSaved(false)
         setUnSaved(true)
@@ -44,6 +43,7 @@ export function MoviesCard({ movie, saveMovie, removeMovie,
 
     function deleteFilm() {
         removeMovie(movie._id);
+        
     }
 
 
@@ -60,8 +60,8 @@ export function MoviesCard({ movie, saveMovie, removeMovie,
                     alt={movie.nameEN} />
             </a>
 
-
-            {!isLocationSavedMovies && saved && <button onClick={unSaveFilmClick} className='movies-card__img-container movies-card__img-container_saved'>
+            {!isLocationSavedMovies && saved && <button onClick={unSaveFilmClick}
+            className='movies-card__img-container movies-card__img-container_saved'>
                 <img src={imgSaveFilm} alt='saved' />
             </button>}
 
