@@ -13,6 +13,7 @@ function checkResponse(res) {
 export const setUserInfo = (user) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -29,6 +30,7 @@ export const setUserInfo = (user) => {
 export const getUserInfo = () => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -51,6 +53,7 @@ export const postMovie = (movie) => {
     } = movie;
     return fetch(`${BASE_URL}/movies`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -75,6 +78,7 @@ export const postMovie = (movie) => {
 export const getMovies = () => {
     return fetch(`${BASE_URL}/movies`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -87,6 +91,7 @@ export const getMovies = () => {
 export const deleteMovie = (movieId) => {
     return fetch(`${BASE_URL}/movies/${movieId}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
