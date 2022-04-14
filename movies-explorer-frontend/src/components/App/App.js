@@ -12,8 +12,10 @@ import { NotFoundPage } from '../NotFoundPage/NotFoundPage';
 import { Header } from '../Header/Header';
 import { Popup } from '../Popup/Popup';
 import { Footer } from '../Footer/Footer';
-import * as Auth from '../../utils/Auth';
-import * as MainApi from '../../utils/MainApi';
+/* import * as Auth from '../../utils/Auth'; */
+import auth from '../../utils/Auth';
+/* import * as MainApi from '../../utils/MainApi'; */
+import mainApi from '../../utils/MainApi';
 import * as MoviesApi from '../../utils/MoviesApi';
 import { ProtectedRoute } from '../../components/ProtectedRoute/ProtectedRoute';
 import { useLocation } from 'react-router-dom';
@@ -73,7 +75,7 @@ function App() {
 
   // user
   useEffect(() => {
-    MainApi.getUserInfo()
+    mainApi.getUserInfo()
       .then((user) => {
         setCurrentUser(user);
       })
@@ -83,7 +85,7 @@ function App() {
   useEffect(() => {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      Auth.getContent(jwt)
+      auth.getContent(jwt)
         .then((res) => {
           if (res) {
             setLoggedIn(true)
@@ -96,7 +98,7 @@ function App() {
   // saved movies display
   useEffect(() => {
     setPreloader(true);
-    MainApi.getMovies()
+    mainApi.getMovies()
       .then((data) => {
         const myMovies = data.filter(function (item) {
           return item.owner === currentUser.id;
@@ -130,7 +132,7 @@ function App() {
 
   // reg, auth, signout
   function registration(name, email, password) {
-    Auth.register(name, email, password)
+    auth.register(name, email, password)
       .then((res) => {
         if (res) {
           setTimeout(() => {
@@ -150,7 +152,7 @@ function App() {
   }
 
   function authorization(password, email) {
-    Auth.login(password, email)
+    auth.login(password, email)
       .then((data) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
@@ -172,7 +174,7 @@ function App() {
   }
 
   function handleUpdateUser(user) {
-    MainApi.setUserInfo(user)
+    mainApi.setUserInfo(user)
       .then((currentUser) => {
         setCurrentUser(currentUser)
         setErrorStyle(false);
@@ -388,7 +390,7 @@ function App() {
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
     setSavedMovies(savedMovies);
 
-    MainApi.postMovie(movie)
+    mainApi.postMovie(movie)
 
       .then((newMovie) => {
 
@@ -440,7 +442,7 @@ function App() {
   function removeMovie(movie) {
     setPreloader(false);
 
-    MainApi.deleteMovie(movie)
+    mainApi.deleteMovie(movie)
 
       .then((deletedMovie) => {
 
