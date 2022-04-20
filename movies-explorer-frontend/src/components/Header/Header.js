@@ -27,7 +27,7 @@ export function Header({ loggedIn, handlePopupClick }) {
                 {<Link to='/'>
                     <img className='header__logo' src={headerLogo} alt='логотип проекта Movie-Explorer' />
                 </Link>}
-                {!mainLocation && <div className={`header__list ${loggedIn ? '' : 'header__list_hidden'}`}>
+                {loggedIn && <div className={`header__list ${loggedIn ? '' : 'header__list_hidden'}`}>
                     <Link to='/movies' className={!moviesLocation ? 'header__list-item' : 'header__list-item header__list-item_bold'}>Фильмы</Link>
                     <Link to='/saved-movies' className={!savedMoviesLocation ? 'header__list-item' : 'header__list-item header__list-item_bold' }>Сохранённые фильмы</Link>
                 </div>}

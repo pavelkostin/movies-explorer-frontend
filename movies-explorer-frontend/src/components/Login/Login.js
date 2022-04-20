@@ -9,8 +9,8 @@ export function Login({ authorization, isSuccess, message, errorStyle }) {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const [validPass, setValidPass] = useState(false);
-    const [validEmail, setValidEmail] = useState(false);
+    const [validPass, setValidPass] = useState(true);
+    const [validEmail, setValidEmail] = useState(true);
     const [buttonActive, setButtonActive] = useState(false);
 
     React.useEffect(() => {
@@ -21,33 +21,43 @@ export function Login({ authorization, isSuccess, message, errorStyle }) {
         }
     }, [buttonActive, validEmail, validPass])
 
-    function removeFocusEmail(e) {
-        checkEmailInput()
-    }
-
-    function removeFocusPass(e) {
-        checkPassInput()
-    }
+    React.useEffect(() => {
+        checkEmailInput();
+        checkPassInput();
+    })
 
     function checkEmailInput(e) {
         const regex =
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!regex.test(String(email).toLocaleLowerCase())) {
+        if (email === '') {
+            setEmailError('');
+            setButtonActive(false);
+            setValidEmail(false);
+        }
+        else if (!regex.test(String(email).toLocaleLowerCase())) {
             setEmailError('Некорректный email');
             setButtonActive(false);
             setValidEmail(false);
-        } else {
+        }
+        else {
             setEmailError('');
             setValidEmail(true);
         }
     }
 
     function checkPassInput(e) {
+        const PASSWORD_REGEX_1=  /^[A-Za-z0-9]\w{2,}$/;
         if (password === '') {
-            setPasswordError('Пароль не может быть пустым');
+            setPasswordError('');
             setButtonActive(false);
             setValidPass(false);
-        } else {
+        } else if (!PASSWORD_REGEX_1.test(password)) {
+            setPasswordError(
+                'Пароль должен содержать латинские буквы или цифры и быть не короче 2 символов');
+            setButtonActive(false);
+            setValidPass(false);
+        }
+        else {
             setPasswordError('');
             setValidPass(true);
         }
@@ -55,12 +65,10 @@ export function Login({ authorization, isSuccess, message, errorStyle }) {
 
     function handleChangeEmail(e) {
         setEmail(e.target.value);
-        checkEmailInput();
     }
 
     function handleChangePassword(e) {
         setPassword(e.target.value);
-        checkPassInput();
     }
 
     function handleSubmit(e) {
@@ -87,10 +95,9 @@ export function Login({ authorization, isSuccess, message, errorStyle }) {
                         <input
                             value={email}
                             required
-                            className='register__input'
+                            className={`register__input ${emailError ? 'register__input_error' : ''}`}
                             type='email'
                             onChange={handleChangeEmail}
-                            onBlur={removeFocusEmail}
                         />
                         {emailError && <div className='register__input-error'>{emailError}</div>}
                     </div>
@@ -99,9 +106,8 @@ export function Login({ authorization, isSuccess, message, errorStyle }) {
                         <input
                             value={password}
                             required type='password'
-                            className='register__input register__input_error'
+                            className={`register__input ${passwordError ? 'register__input_error' : ''}`}
                             onChange={handleChangePassword}
-                            onBlur={removeFocusPass}
                         />
                         {passwordError && <div className='register__input-error'>{passwordError}</div>}
                     </div>

@@ -24,20 +24,18 @@ export function Register({ registration, isSuccess, message, errorStyle }) {
         }
     }, [buttonActive, validName, validEmail, validPass])
 
-    function removeFocusName(e) {
-        checkNameInput()
-    }
-
-    function removeFocusEmail(e) {
-        checkEmailInput()
-    }
-
-    function removeFocusPass(e) {
-        checkPassInput()
-    }
+    React.useEffect(() => {
+        checkNameInput();
+        checkEmailInput();
+        checkPassInput();
+    })
 
     function checkNameInput(e) {
-        if ((name.length < 2) || (name.length > 30)) {
+        if (name === '') {
+            setNameError('');
+            setButtonActive(false);
+            setValidName(false);
+        } else if ((name.length < 2) || (name.length > 30)) {
             setNameError('Длина имени должна быть от 2 до 30 символов');
             setButtonActive(false);
             setValidName(false);
@@ -50,22 +48,35 @@ export function Register({ registration, isSuccess, message, errorStyle }) {
     function checkEmailInput(e) {
         const regex =
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!regex.test(String(email).toLocaleLowerCase())) {
+        if (email === '') {
+            setEmailError('');
+            setButtonActive(false);
+            setValidEmail(false);
+        }
+        else if (!regex.test(String(email).toLocaleLowerCase())) {
             setEmailError('Некорректный email');
             setButtonActive(false);
             setValidEmail(false);
-        } else {
+        }
+        else {
             setEmailError('');
             setValidEmail(true);
         }
     }
 
     function checkPassInput(e) {
+        const PASSWORD_REGEX_1=  /^[A-Za-z0-9]\w{2,}$/;
         if (password === '') {
-            setPasswordError('Пароль не может быть пустым');
+            setPasswordError('');
             setButtonActive(false);
             setValidPass(false);
-        } else {
+        } else if (!PASSWORD_REGEX_1.test(password)) {
+            setPasswordError(
+                'Пароль должен содержать латинские буквы или цифры и быть не короче 2 символов');
+            setButtonActive(false);
+            setValidPass(false);
+        }
+        else {
             setPasswordError('');
             setValidPass(true);
         }
@@ -114,10 +125,9 @@ export function Register({ registration, isSuccess, message, errorStyle }) {
                         <input
                             value={name}
                             required
-                            className='register__input'
+                            className={`register__input ${nameError ? 'register__input_error' : ''}`}
                             type='text'
                             onChange={handleChangeName}
-                            onBlur={removeFocusName}
                         />
                         {nameError && <div className='register__input-error'>{nameError}</div>}
                     </div>
@@ -126,10 +136,9 @@ export function Register({ registration, isSuccess, message, errorStyle }) {
                         <input
                             value={email}
                             required
-                            className='register__input'
+                            className={`register__input ${emailError ? 'register__input_error' : ''}`}
                             type='email'
                             onChange={handleChangeEmail}
-                            onBlur={removeFocusEmail}
                         />
                         {emailError && <div className='register__input-error'>{emailError}</div>}
                     </div>
@@ -138,9 +147,8 @@ export function Register({ registration, isSuccess, message, errorStyle }) {
                         <input
                             value={password}
                             required type='password'
-                            className={passwordError ? 'register__input register__input_error' : 'register__input'}
+                            className={`register__input ${passwordError ? 'register__input_error' : ''}`}
                             onChange={handleChangePassword}
-                            onBlur={removeFocusPass}
                         />
                         {passwordError && <div className='register__input-error'>{passwordError}</div>}
                     </div>

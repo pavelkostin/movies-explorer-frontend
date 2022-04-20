@@ -26,6 +26,8 @@ export function Movies({
             <SearchForm
                 onSearch={onSearch}
                 onSearchShort={onSearchShort}
+
+
             />
             {preloader && <Preloader
                 preloader={preloader}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useHistory, withRouter } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import { slice } from 'lodash';
 import { Main } from '../Main/Main';
@@ -12,9 +12,7 @@ import { NotFoundPage } from '../NotFoundPage/NotFoundPage';
 import { Header } from '../Header/Header';
 import { Popup } from '../Popup/Popup';
 import { Footer } from '../Footer/Footer';
-/* import * as Auth from '../../utils/Auth'; */
 import auth from '../../utils/Auth';
-/* import * as MainApi from '../../utils/MainApi'; */
 import mainApi from '../../utils/MainApi';
 import * as MoviesApi from '../../utils/MoviesApi';
 import { ProtectedRoute } from '../../components/ProtectedRoute/ProtectedRoute';
@@ -43,7 +41,8 @@ function App() {
   const [isSuccessApiError, setIsSuccessApiError] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
-  const [clickedBtnSearch, setClickedBtnSearch] = useState(false)
+  const [clickedBtnSearch, setClickedBtnSearch] = useState(false);
+
 
   const location = useLocation();
   const isLocationSavedMovies = location.pathname === '/saved-movies';
@@ -85,41 +84,79 @@ function App() {
   useEffect(() => {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      auth.getContent(jwt)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true)
-            history.push('/movies')
-          }
-        });
+      setLoggedIn(true)
+      if (
+        location.pathname === '/signup' ||
+        location.pathname === '/signin'
+      ) {
+        history.push('/movies');
+      } else if (
+        location.pathname === '/saved-movies'
+      ) {
+        history.push('/saved-movies')
+      } else if (
+        location.pathname === '/profile'
+      ) {
+        history.push('/profile')
+      }
+    } else {
+      setLoggedIn(false)
     }
-  }, [history, loggedIn])
+
+
+  }, [loggedIn, history, location.pathname])
+
+  // movies display
+  useEffect(() => {
+
+    const moviesFromStorage = localStorage.getItem('movies');
+    if (!moviesFromStorage) {
+      localStorage.setItem('movies', JSON.stringify([]));
+    }
+    const moviesParsed = JSON.parse(moviesFromStorage);
+
+    const moviesFromStorageSliced = localStorage.getItem('slicedMovies');
+    if (!moviesFromStorageSliced) {
+      localStorage.setItem('slicedMovies', JSON.stringify([]));
+    }
+    const moviesFromStorageSlicedParsed = JSON.parse(moviesFromStorageSliced);
+
+    setMovies(moviesParsed);
+    setSlacedMovies(moviesFromStorageSlicedParsed);
+
+  }, [loggedIn])
 
   // saved movies display
   useEffect(() => {
     setPreloader(true);
+    setClickedBtnSearch(false);
     mainApi.getMovies()
       .then((data) => {
         const myMovies = data.filter(function (item) {
           return item.owner === currentUser.id;
         })
         setPreloader(false);
-
+        setClickedBtnSearch(false);
         setSavedMovies(myMovies);
         localStorage.setItem('savedMovies', JSON.stringify(myMovies));
-
       })
       .catch((err) => console.log(err))
   }, [isLocationSavedMovies, isLocationMovies, loggedIn, currentUser.id]);
 
   // show more button
   useEffect(() => {
-    if (movies.length === slicedMovies.length) {
+
+    if (movies === null || slicedMovies === null) {
+      localStorage.setItem('movies', JSON.stringify([]));
+      localStorage.setItem('slicedMovies', JSON.stringify([]));
+    }
+
+    else if (movies.length === slicedMovies.length) {
       setMoreFilmsBtn(false);
     } else {
       setMoreFilmsBtn(true);
     }
-  }, [slicedMovies, movies]);
+  }, [slicedMovies, movies, loggedIn]);
 
   // popup
   function handlePopupClick() {
@@ -136,7 +173,8 @@ function App() {
       .then((res) => {
         if (res) {
           setTimeout(() => {
-            history.push('/signin')
+            /* history.push('/signin') */
+            authorization(email, password);
           }, 2000)
         }
       })
@@ -188,12 +226,23 @@ function App() {
   }
 
   function signOut() {
+
     localStorage.removeItem('token');
+    localStorage.setItem('movies', JSON.stringify([]));
+    localStorage.setItem('slicedMovies', JSON.stringify([]));
+
+    localStorage.setItem('activeShortBtn', JSON.stringify(false));
+    localStorage.removeItem('searchItem');
+
+    setMovies([]);
+    setSlacedMovies([]);
+
+
     setLoggedIn(false);
     history.push('/');
   }
 
-  // search movies & search saved movies
+  // search movies
 
   function fetchFilmsShort(searchItem) {
 
@@ -208,7 +257,10 @@ function App() {
     MoviesApi.getFilms()
       .then((data) => {
         const filteredShort = data.filter(function (item) {
-          return item.nameRU.includes(searchItem) && item.duration < 40;
+          /* return item.nameRU.includes(searchItem) && item.duration < 40; */
+
+          return item.nameRU.toLowerCase().includes(searchItem.toLowerCase()) &&
+            item.duration < 40;
         })
         if (filteredShort.length === 0) {
           setMoreFilmsBtn(false);
@@ -224,12 +276,15 @@ function App() {
             setPreloader(false);
             setNoResults(false);
             setMessage('');
-            /* setMovies(filteredShort); */
 
             // для showmore
+            changeLimit();
             const a = slice(filteredShort, 0, LIMIT);
             setMovies(a);
             setSlacedMovies(filteredShort);
+
+            localStorage.setItem('slicedMovies', JSON.stringify(filteredShort));
+            localStorage.setItem('movies', JSON.stringify(a));
 
           }, 500)
         }
@@ -261,7 +316,11 @@ function App() {
     MoviesApi.getFilms()
       .then((data) => {
         const filteredMovies = data.filter(function (item) {
-          return item.nameRU.includes(searchItem);
+          /* return item.nameRU.includes(searchItem) ; */
+          return (
+            item.nameRU.toLowerCase().includes(searchItem.toLowerCase())
+          );
+
         })
         if (filteredMovies.length === 0) {
           setMoreFilmsBtn(false);
@@ -278,16 +337,16 @@ function App() {
             setPreloader(false);
             setNoResults(false);
             setMessage('');
+
             // для showmore
 
             changeLimit();
-
             const a = slice(filteredMovies, 0, LIMIT);
             setMovies(a);
             setSlacedMovies(filteredMovies);
 
-            console.log(movies);
-            console.log(slicedMovies);
+            localStorage.setItem('slicedMovies', JSON.stringify(filteredMovies));
+            localStorage.setItem('movies', JSON.stringify(a));
 
 
           }, 500)
@@ -306,12 +365,13 @@ function App() {
       });
   }
 
-  // display more films
+  // display more films click
   function handleMoreFilmsClick() {
+
     /* setMovies([]); */
-
-
     /* const newIndex = index + LIMIT; */
+
+
     const newIndex = index + STEP;
     const d = slice(slicedMovies, index, newIndex);
     const e = ([...movies, ...d])
@@ -327,8 +387,9 @@ function App() {
     setClickedBtnSearch(true);
     setNoResults(true);
     let results = savedMovies.filter((item) => {
-      return item.nameRU.includes(searchItem) &&
-        item.owner === currentUser.id;
+      return /* item.nameRU.includes(searchItem) */ (
+        item.nameRU.toLowerCase().includes(searchItem.toLowerCase()) &&
+        item.owner === currentUser.id);
     })
     if (results.length === 0) {
       setTimeout(() => {
@@ -352,12 +413,11 @@ function App() {
     setMessage('');
     setClickedBtnSearch(true);
     setNoResults(true);
-
-
     let shortResults = savedMovies.filter((item) => {
-      return item.nameRU.includes(searchItem)
+      return /* item.nameRU.includes(searchItem) */ (
+        item.nameRU.toLowerCase().includes(searchItem.toLowerCase())
         && item.owner === currentUser.id
-        && item.duration < 40
+        && item.duration < 40)
     })
 
     if (shortResults.length === 0) {
@@ -376,7 +436,6 @@ function App() {
         setMessage('');
         setFilteredResults(shortResults);
       }, 500);
-      /* localStorage.setItem('shortMovies', JSON.stringify(shortSavedMovies)); */
     }
 
 
@@ -450,8 +509,6 @@ function App() {
           savedMovies.filter((state) =>
             state.movieId !== deletedMovie.movieId))
 
-
-
         setPreloader(false);
       })
       .catch((err) => console.log(err))
@@ -471,7 +528,7 @@ function App() {
             <Main />
           </Route>
 
-          <Route path='/signin'>
+          <Route exact path='/signin'>
             <Login
               authorization={authorization}
               isSuccess={isSuccess}
@@ -480,7 +537,7 @@ function App() {
             />
           </Route>
 
-          <Route path='/signup'>
+          <Route exact path='/signup'>
             <Register
               registration={registration}
               isSuccess={isSuccess}
@@ -488,6 +545,16 @@ function App() {
               errorStyle={errorStyle}
             />
           </Route>
+
+          <ProtectedRoute exact path='/profile'
+            component={Profile}
+            loggedIn={loggedIn}
+            signOut={signOut}
+            isSuccess={isSuccess}
+            message={message}
+            onUpdateUser={handleUpdateUser}
+            errorStyle={errorStyle}
+          />
 
           <ProtectedRoute exact path='/movies'
             component={Movies}
@@ -500,7 +567,6 @@ function App() {
             preloader={preloader}
             noResults={noResults}
             message={message}
-
             isSuccess={isSuccess}
             isSuccessApiError={isSuccessApiError}
             handleMoreFilmsClick={handleMoreFilmsClick}
@@ -522,24 +588,15 @@ function App() {
             isSuccess={isSuccess}
             isSuccessApiError={isSuccessApiError}
             movies={movies}
-
             filteredResults={filteredResults}
             clickedBtnSearch={clickedBtnSearch}
           />
 
-          <ProtectedRoute exact path='/profile'
-            component={Profile}
-            loggedIn={loggedIn}
-            signOut={signOut}
-            isSuccess={isSuccess}
-            message={message}
-            onUpdateUser={handleUpdateUser}
-            errorStyle={errorStyle}
-          />
-
-          <Route path='/*'>
+          <Route exact path='/*'>
             <NotFoundPage />
           </Route>
+
+          <Redirect to='/*' />
 
         </Switch>
 
@@ -552,4 +609,4 @@ function App() {
   );
 }
 
-export default withRouter(App);
+export default App;

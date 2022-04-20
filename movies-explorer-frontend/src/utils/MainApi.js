@@ -1,4 +1,4 @@
-/* export const BASE_URL = 'http://localhost:3003'; */
+/* export const BASE_URL = 'http://localhost:3002'; */
 export const BASE_URL = 'https://api.movie-kpa.nomoredomains.rocks';
 
 export const SERVER_URL = 'https://api.nomoreparties.co'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export function SearchForm({ onSearch, onSearchShort }) {
 
@@ -6,8 +6,25 @@ export function SearchForm({ onSearch, onSearchShort }) {
     const [active, setActive] = useState(false);
     const [error, setError] = useState('');
 
+    useEffect(() => {
+
+        // checkbox
+        const stateFromStorage = localStorage.getItem('activeShortBtn');
+        if (stateFromStorage === null) {
+            localStorage.setItem('activeShortBtn', JSON.stringify(false));
+        }
+        const stateFromStorageParsed = JSON.parse(stateFromStorage);
+        setActive(stateFromStorageParsed);
+
+        // searchItem
+        const searchItemFromStorage = localStorage.getItem('searchItem');
+        setSearchItem(searchItemFromStorage);
+
+    }, [])
+
     function getInputValue(e) {
         setSearchItem(e.target.value);
+        localStorage.setItem('searchItem', e.target.value);
         setError('');
     }
 
@@ -38,14 +55,21 @@ export function SearchForm({ onSearch, onSearchShort }) {
     }
 
     function clickButtonTrue() {
+
         setActive(true);
+        localStorage.setItem('activeShortBtn', true);
+
         if (searchItem !== '') {
             onSearchShort(searchItem);
         }
     }
 
     function clickButtonFalse() {
+
+
         setActive(false);
+        localStorage.setItem('activeShortBtn', false);
+
         if (searchItem !== '') {
             onSearch(searchItem);
         }
@@ -62,7 +86,7 @@ export function SearchForm({ onSearch, onSearchShort }) {
                     defaultValue={searchItem}
                     onChange={getInputValue}
                     onBlur={removeFocus}
-                    /* required */
+                /* required */
                 />
                 <button className='search-btn' type='submit'>Найти</button>
             </form>
