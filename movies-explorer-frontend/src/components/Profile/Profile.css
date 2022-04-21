@@ -1,0 +1,141 @@
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 92px;
+
+    background-color: #202020;
+    padding: 0 70px 0;
+    /* min-width: 320px; */
+    /* overflow:  hidden; */
+}
+
+@media screen and (max-width: 768px) {
+    .profile {
+        padding: 80px 50px 0;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .profile {
+        padding: 80px 18px 0;
+    }
+}
+
+.profile__title {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 29px;
+    letter-spacing: 0em;
+    text-align: center;
+
+    margin-bottom: 123px;
+}
+
+.profile__container {
+    min-width: 410px;
+}
+
+@media screen and (max-width: 768px) {
+    .profile__container {
+        padding: 80px 50px 0;
+        min-width: 260px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .profile__container {
+        padding: 80px 18px 0;
+    }
+}
+
+
+
+
+
+.profile__input-container {
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+    border-bottom: 1px solid #424242;
+}
+
+.profile__input-container:nth-of-type(2) {
+    margin: 17px 0;
+    border: none;
+}
+
+.profile__input {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0px;
+    margin-bottom: 16px;
+
+    background-color: #202020;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    text-align: right;
+}
+
+.profile__input_title {
+    font-weight: 500;
+}
+
+.profile__btn-container {
+    margin-top: 203px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__edit-btn {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0px;
+    text-align: center;
+    margin-bottom: 16px;
+    border: none;
+    background-color: #202020;
+    color: #fff;
+}
+
+.profile__edit-btn_active {
+    transition: opacity 0.3s ease-in-out;
+    color: #59e641;
+}
+
+.profile__edit-btn_active:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.profile__log-out-btn {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0px;
+    text-align: center;
+    color: #EE3465;
+    /* margin-bottom: 0; */
+    transition: opacity 0.3s ease-in-out;
+    border: none;
+    background-color: #202020;
+    
+}
+
+.profile__log-out-btn:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+

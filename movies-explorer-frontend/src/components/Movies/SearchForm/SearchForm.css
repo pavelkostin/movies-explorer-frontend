@@ -1,0 +1,152 @@
+.search-section {
+    background-color: #202020;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 70px 65px;
+    max-width: 1280px;
+    margin: 0 auto
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .search-section {
+        padding: 80px 50px 50px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .search-section {
+        padding: 80px 18px 50px;
+    }
+}
+
+.search-label {
+    display: flex;
+    background-color: #2F2F2F;
+    border: 1px solid #202020;
+    border-radius: 40px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 6px;
+
+    
+}
+
+
+@media screen and (max-width: 420px) {
+    .search-label {
+        min-width: 262px;
+    }
+}
+
+.search-input:focus {
+    outline: none;
+    width: calc(100% - 30%);
+    border-radius: 40px;
+    color: #FFFFFF;
+}
+
+.search-input {
+    background-color: #2F2F2F;
+    border: none;
+    outline: none;
+    margin-left: 16px;
+    color: #8B8B8B;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: left;
+}
+
+
+.search-input-error {
+    color: red;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-left: 16px;
+}
+
+@media screen and (max-width: 420px) {
+    .search-input {
+        margin-left: 13px;
+    }
+}
+
+.search-btn {
+    margin: 0;
+    background-color: #4285F4;
+    border: none;
+    border-radius: 48px;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0px;
+    text-align: center;
+
+    width: 58px;
+    padding: 8px 10px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.search-btn:hover {
+    opacity: 0.6;
+}
+
+.search-container {
+    margin-top: 41px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-switch {
+    background-color: #3DDC84;
+    border-radius: 19px;
+    width: 36px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 2px;
+
+    border: none;
+    outline: none;
+}
+
+.search-switch_start {
+    justify-content: flex-start;
+    background-color: grey;
+}
+
+.search-circle {
+    background-color: #FFFFFF;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.search-para {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin: 0 0 0 10px;
+    padding: 0px;
+}
+
+@media screen and (max-width: 320px) {
+    .search-para {
+        font-size: 11px;
+    }
+}
+
